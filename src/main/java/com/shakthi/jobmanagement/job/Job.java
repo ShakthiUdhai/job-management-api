@@ -1,5 +1,6 @@
-package com.shakthi.firstjobapp.job;
+package com.shakthi.jobmanagement.job;
 
+import com.shakthi.jobmanagement.companies.Company;
 import jakarta.persistence.*;
 
 @Entity
@@ -7,14 +8,24 @@ import jakarta.persistence.*;
 public class Job {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private Long minExperience;
     private Long salary;
+    @ManyToOne
+    private Company company;
 
 
     public Job() {
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public Job(Long id, String title, Long minExperience, Long salary) {

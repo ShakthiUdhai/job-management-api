@@ -1,4 +1,4 @@
-package com.shakthi.firstjobapp.reviews;
+package com.shakthi.jobmanagement.reviews;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

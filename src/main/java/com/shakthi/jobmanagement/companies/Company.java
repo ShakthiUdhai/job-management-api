@@ -1,24 +1,39 @@
-package com.shakthi.firstjobapp.companies;
+package com.shakthi.jobmanagement.companies;
 
 
-import com.shakthi.firstjobapp.reviews.Review;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.shakthi.jobmanagement.job.Job;
+import com.shakthi.jobmanagement.reviews.Review;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class Companies {
+public class Company {
 
-    public Companies() {
+    public Company() {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String location;
-    @OneToMany
-    @JoinColumn(name = "companyId") // points to the column in Review
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
     private List<Review> reviewList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
+    private List<Job> jobs;
+
+    public List<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
+    }
 
     public Long getId() {
         return id;

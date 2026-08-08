@@ -1,11 +1,10 @@
-package com.shakthi.firstjobapp.reviews.impl;
+package com.shakthi.jobmanagement.reviews.impl;
 
-import com.shakthi.firstjobapp.companies.Companies;
-import com.shakthi.firstjobapp.companies.CompaniesRepository;
-import com.shakthi.firstjobapp.companies.impl.CompaniesServiceImpl;
-import com.shakthi.firstjobapp.reviews.Review;
-import com.shakthi.firstjobapp.reviews.ReviewRepository;
-import com.shakthi.firstjobapp.reviews.ReviewService;
+import com.shakthi.jobmanagement.companies.Company;
+import com.shakthi.jobmanagement.companies.impl.CompanyServiceImpl;
+import com.shakthi.jobmanagement.reviews.Review;
+import com.shakthi.jobmanagement.reviews.ReviewRepository;
+import com.shakthi.jobmanagement.reviews.ReviewService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,18 +14,18 @@ import java.util.Objects;
 public class ReviewServiceImpl implements ReviewService {
 
     ReviewRepository reviewRepository;
-    CompaniesServiceImpl companiesService;
+    CompanyServiceImpl companiesService;
 
-    private static Long reviewId = 1L;
+    //private static Long reviewId = 1L;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, CompaniesServiceImpl companiesService) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, CompanyServiceImpl companiesService) {
         this.reviewRepository = reviewRepository;
         this.companiesService = companiesService;
     }
 
     @Override
     public List<Review> getReviewByCompanyId(Long companyId) {
-        Companies company = companiesService.findCompanyById(companyId);
+        Company company = companiesService.findCompanyById(companyId);
         if(company==null){
             return null;
         }
@@ -37,13 +36,24 @@ public class ReviewServiceImpl implements ReviewService {
     public Boolean addReviewByCompanyId(Review review, Long companyId) {
 
 
-        Companies company = companiesService.findCompanyById(companyId);
+        Company company = companiesService.findCompanyById(companyId);
+        Long reviewId = 0L;
         if(company==null){
             return false;
         }
         List<Review> reviews = company.getReviewList();
-        review.setReviewId(reviewId++);
-        review.setCompanyId(companyId);
+        if(reviews==null){
+            reviewId = 1L;
+        }
+        else{
+            for(Review reviewSingle : reviews){
+                if(reviewSingle.getReviewId()>reviewId){
+                    reviewId = reviewSingle.getReviewId();
+                }
+            }
+        }
+        review.setReviewId(++reviewId);
+        review.setCompany(company);
         reviewRepository.save(review);
         reviews.add(review);
         company.setReviewList(reviews);
@@ -54,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Review getReviewByReviewId(Long companyId, Long reviewId) {
-        Companies company = companiesService.findCompanyById(companyId);
+        Company company = companiesService.findCompanyById(companyId);
         if(company==null){
             return null;
         }
@@ -69,7 +79,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Boolean updateReviewByReviewId(Long companyId, Long reviewId, Review review) {
-        Companies company = companiesService.findCompanyById(companyId);
+        Company company = companiesService.findCompanyById(companyId);
         if(company==null){
             return false;
         }
@@ -85,7 +95,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Boolean deleteReviewByReviewId(Long companyId, Long reviewId) {
-        Companies company = companiesService.findCompanyById(companyId);
+        Company company = companiesService.findCompanyById(companyId);
         if(company==null){
             return false;
         }

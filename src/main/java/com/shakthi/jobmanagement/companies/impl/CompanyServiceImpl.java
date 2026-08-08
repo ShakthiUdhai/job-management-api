@@ -1,43 +1,38 @@
-package com.shakthi.firstjobapp.companies.impl;
+package com.shakthi.jobmanagement.companies.impl;
 
-import com.shakthi.firstjobapp.companies.Companies;
-import com.shakthi.firstjobapp.companies.CompaniesRepository;
-import com.shakthi.firstjobapp.companies.CompaniesService;
-import com.shakthi.firstjobapp.reviews.Review;
+import com.shakthi.jobmanagement.companies.Company;
+import com.shakthi.jobmanagement.companies.CompaniesRepository;
+import com.shakthi.jobmanagement.companies.CompanyService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CompaniesServiceImpl implements CompaniesService {
+public class CompanyServiceImpl implements CompanyService {
 
     private CompaniesRepository companiesRepository;
-    private Long idSeq = 1L;
+   // private Long idSeq = 1L;
 
-    public CompaniesServiceImpl(CompaniesRepository companiesRepository) {
+    public CompanyServiceImpl(CompaniesRepository companiesRepository) {
         this.companiesRepository = companiesRepository;
     }
 
     @Override
-    public List<Companies> findall() {
+    public List<Company> findall() {
         return companiesRepository.findAll();
     }
 
     @Override
-    public boolean updateCompany(Long id,Companies company) {
+    public boolean updateCompany(Long id, Company company) {
 
-        Optional<Companies> companyOptional = companiesRepository.findById(id);
+        Optional<Company> companyOptional = companiesRepository.findById(id);
             if(companyOptional.isPresent()) {
-                Companies companyToBeUpdated = companyOptional.get();
+                Company companyToBeUpdated = companyOptional.get();
                 companyToBeUpdated.setId(company.getId());
                 companyToBeUpdated.setLocation(company.getLocation());
                 companyToBeUpdated.setName(company.getName());
                 //companyToBeUpdated.setReviewList(company.getReviewList());
-                List<Review> reviews = company.getReviewList();
-                if(!reviews.isEmpty()){
-                    companyToBeUpdated.setReviewList(reviews);
-                }
                 companiesRepository.save(companyToBeUpdated);
                 return true;
             }
@@ -45,15 +40,15 @@ public class CompaniesServiceImpl implements CompaniesService {
     }
 
     @Override
-    public boolean addCompany(Companies company) {
-        company.setId(idSeq++);
+    public boolean addCompany(Company company) {
+        //company.setId(idSeq++);
         companiesRepository.save(company);
         return true;
     }
 
     @Override
     public boolean deleteCompany(Long id) {
-        Optional<Companies> isCompanyFound = companiesRepository.findById(id);
+        Optional<Company> isCompanyFound = companiesRepository.findById(id);
         if(isCompanyFound.isPresent()){
             companiesRepository.deleteById(id);
             return true;
@@ -62,7 +57,7 @@ public class CompaniesServiceImpl implements CompaniesService {
     }
 
     @Override
-    public Companies findCompanyById(Long id) {
+    public Company findCompanyById(Long id) {
         return companiesRepository.findById(id).orElse(null);
     }
 }

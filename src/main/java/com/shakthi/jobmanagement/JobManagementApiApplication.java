@@ -1,13 +1,13 @@
-package com.shakthi.firstjobapp;
+package com.shakthi.jobmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FirstjobappApplication {
+public class JobManagementApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FirstjobappApplication.class, args);
+		SpringApplication.run(JobManagementApiApplication.class, args);
 	}
 
 }

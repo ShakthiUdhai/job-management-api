@@ -1,9 +1,8 @@
-package com.shakthi.firstjobapp.reviews;
+package com.shakthi.jobmanagement.reviews;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.shakthi.jobmanagement.companies.Company;
+import jakarta.persistence.*;
 
 @Entity
 public class Review {
@@ -12,9 +11,19 @@ public class Review {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
     private String review;
-    private Long companyId;
+    @ManyToOne
+    private Company company;
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
     public Long getReviewId() {
         return reviewId;
@@ -30,13 +39,5 @@ public class Review {
 
     public void setReview(String review) {
         this.review = review;
-    }
-
-    public Long getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 }

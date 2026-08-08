@@ -1,8 +1,7 @@
-package com.shakthi.firstjobapp.reviews;
+package com.shakthi.jobmanagement.reviews;
 
 
-import com.shakthi.firstjobapp.companies.Companies;
-import com.shakthi.firstjobapp.reviews.impl.ReviewServiceImpl;
+import com.shakthi.jobmanagement.reviews.impl.ReviewServiceImpl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

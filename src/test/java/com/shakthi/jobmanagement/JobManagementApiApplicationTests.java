@@ -1,10 +1,10 @@
-package com.shakthi.firstjobapp;
+package com.shakthi.jobmanagement;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FirstjobappApplicationTests {
+class JobManagementApiApplicationTests {
 
 	@Test
 	void contextLoads() {

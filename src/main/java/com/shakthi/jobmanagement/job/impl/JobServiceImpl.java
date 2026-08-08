@@ -1,12 +1,11 @@
-package com.shakthi.firstjobapp.job.impl;
+package com.shakthi.jobmanagement.job.impl;
 
-import com.shakthi.firstjobapp.job.Job;
-import com.shakthi.firstjobapp.job.JobRepository;
-import com.shakthi.firstjobapp.job.JobService;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.shakthi.jobmanagement.job.Job;
+import com.shakthi.jobmanagement.job.JobNotFoundException;
+import com.shakthi.jobmanagement.job.JobRepository;
+import com.shakthi.jobmanagement.job.JobService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +14,7 @@ public class JobServiceImpl implements JobService {
 
     //List<Job> jobs = new ArrayList<>();
     JobRepository jobRepository;
-    Long nextJobId = 1L;
+    //Long nextJobId = 1L;
 
     public JobServiceImpl(JobRepository jobRepository) {
         this.jobRepository = jobRepository;
@@ -28,39 +27,47 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job findJobById(Long id) {
-        return jobRepository.findById(id).orElse(null);
+        return jobRepository.findById(id).orElseThrow(() -> new JobNotFoundException("Job with id : "+id+" Not found"));
     }
 
     @Override
     public void createJob(Job job) {
 /*        job.setId(nextJobId++);
         jobs.add(job);*/
-        job.setId(nextJobId++);
+        //job.setId(nextJobId++);
         jobRepository.save(job);
     }
 
     @Override
-    public boolean deleteJob(Long id) {
-/*        for(Job job:jobs){
+    public void deleteJob(Long id) {
+        Job job = findJobById(id);
+        if(job==null){
+            throw new JobNotFoundException("Job with id : "+id+" Not found");
+        }
+        else{
+            jobRepository.deleteById(id);
+            //return true;
+        }
+        /*for(Job job:jobs){
             if(job.getId()==id){
                 jobs.remove(job);
                 return true;
             }
         }
         return false;*/
-        try{
+        /*try{
             jobRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             return false;
-        }
+        }*/
 
 
 
     }
 
     @Override
-    public boolean updateJob(Long id,Job job) {
+    public void updateJob(Long id, Job job) {
 /*        List<Job> jobs = jobRepository.findAll();
         for(Job jobsingle:jobs){
             if (jobsingle.getId()==id){
@@ -78,8 +85,7 @@ public class JobServiceImpl implements JobService {
             jobToBeUpdated.setTitle(job.getTitle());
             jobToBeUpdated.setMinExperience(job.getMinExperience());
             jobRepository.save(jobToBeUpdated);
-            return true;
         }
-        return false;
+        throw new JobNotFoundException("Job with id : "+id+" Not found");
     }
 }
